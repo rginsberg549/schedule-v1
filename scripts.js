@@ -24,11 +24,12 @@ function createRow(time) {
     saveElement.addClass("col-sm-2 btn btn-info")
     saveElement.text("Save");
     $(saveElement).on("click", function(event){
-        var key = $(this).attr("id");
-        
-        console.log(event);
-        console.log(inputElement);
-        
+        event.preventDefault();
+        var data = {
+            "key" : $(inputElement).attr("id"),
+            "details": $(inputElement).val().trim()
+        }
+        console.log(data);
     });
 
     rowElement.append(timeElement);
@@ -36,14 +37,8 @@ function createRow(time) {
     rowElement.append(saveElement);
 
     containerElement.append(rowElement);
-
-
 }
 
-function saveDetail(event, inputValue) {
-    console.log(event);
-    console.log(inputValue);
-}
 
 
 function render() {
