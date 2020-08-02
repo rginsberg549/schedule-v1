@@ -8,13 +8,17 @@ function createRow(time) {
     rowElement.addClass("row m-3");
 
     var timeElement = $("<span>");
-    timeElement.attr("id", moment().hour(time).format("HH"));
+    timeElement.attr("id", moment().hour(time).format("H"));
     timeElement.addClass("col-sm-2 text-center mt-2")
     timeElement.text(moment().hour(time).format("h a"));
     
     var inputElement = $("<input>");
     inputElement.attr("id", time + "-details")
-    inputElement.addClass("col-sm-6");
+    inputElement.addClass("col-sm-7");
+
+    var msgElement = $("<span>");
+    msgElement.attr("id", time + "-message");
+    msgElement.addClass("mx-auto text-success");
 
     var saveElement = $("<button>")
     saveElement.attr("id", time + "-save")
@@ -23,25 +27,33 @@ function createRow(time) {
     $(saveElement).on("click", function(event){
         event.preventDefault();
         var key = $(inputElement).attr("id")
-        console.log(key);
         var data = $(inputElement).val().trim()
         localStorage.setItem(key, data);
+        msgElement.text("Saved");
+        setTimeout(function() {
+            msgElement.text('');
+        }, 1000);
     })
 
-    var clearElement = $("<button>")
-    clearElement.attr("id", time + "-clear")
-    clearElement.addClass("col-sm-1 btn btn-info")
+    var clearElement = $("<button>");
+    clearElement.attr("id", time + "-clear");
+    clearElement.addClass("col-sm-1 btn btn-info");
     clearElement.text("Clear");
     $(clearElement).on("click", function(event){
-        var key = $(inputElement).attr("id")
+        var key = $(inputElement).attr("id");
         localStorage.removeItem(key);
         $("#" + key).val('');
+        msgElement.text("Cleared");
+        setTimeout(function() {
+            msgElement.text('');
+        }, 1000);
     });
 
     rowElement.append(timeElement);
     rowElement.append(inputElement);
     rowElement.append(saveElement);
     rowElement.append(clearElement);
+    rowElement.append(msgElement);
 
     containerElement.append(rowElement);
 }
@@ -63,14 +75,14 @@ function todayDate() {
 
         for (let index = 0; index < workingHours.length; index++) {
             var timeBlock = $("#" + workingHours[index]).attr("id");
-            var currentTime = moment().format("HH");
+            var currentTime = moment().hour();
             
             if (timeBlock === currentTime) {
-                $("#" + workingHours[index] + "-details").addClass("bg-light");
+                $("#" + workingHours[index] + "-details").addClass("bg-success");
             } else if (timeBlock > currentTime) {
                 $("#" + workingHours[index] + "-details").addClass("bg-info");
             } else {
-                $("#" + workingHours[index] + "-details").addClass("");
+                $("#" + workingHours[index] + "-details").addClass("bg-warning");
 
             }
         }
