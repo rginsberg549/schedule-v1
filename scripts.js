@@ -1,5 +1,7 @@
 var workingHours = [8,9,10,11,12,13,14,15,16,17];
 
+var date = moment().format("MMM-DD-YYYY  hh:mm");
+
 var containerElement = $(".container");
 
 
@@ -9,10 +11,10 @@ function createRow(time) {
 
     var timeElement = $("<span>");
     timeElement.attr("id", moment().hour(time).format("H"));
-    timeElement.addClass("col-sm-2 text-center mt-2")
+    timeElement.addClass("col-sm-2 text-center border-top border-bottom")
     timeElement.text(moment().hour(time).format("h a"));
     
-    var inputElement = $("<input>");
+    var inputElement = $("<textarea>");
     inputElement.attr("id", time + "-details")
     inputElement.addClass("col-sm-7");
 
@@ -29,7 +31,7 @@ function createRow(time) {
         var key = $(inputElement).attr("id")
         var data = $(inputElement).val().trim()
         localStorage.setItem(key, data);
-        msgElement.text("Saved");
+        msgElement.text("Your changes have been saved");
         setTimeout(function() {
             msgElement.text('');
         }, 1000);
@@ -43,10 +45,10 @@ function createRow(time) {
         var key = $(inputElement).attr("id");
         localStorage.removeItem(key);
         $("#" + key).val('');
-        msgElement.text("Cleared");
+        msgElement.text("Your input has been cleared");
         setTimeout(function() {
             msgElement.text('');
-        }, 1000);
+        }, (1000));
     });
 
     rowElement.append(timeElement);
@@ -71,22 +73,21 @@ function getDetails(time) {
 
 function todayDate() {
     setInterval(function() {
-        $(".current-date-time").text("Today is " + moment().format("MMM-DD-YYYY"));
+        $(".current-date-time").text("Today is " + date);
 
         for (let index = 0; index < workingHours.length; index++) {
             var timeBlock = $("#" + workingHours[index]).attr("id");
             var currentTime = moment().hour();
             
-            if (timeBlock === currentTime) {
+            if (timeBlock == currentTime) {
                 $("#" + workingHours[index] + "-details").addClass("bg-success");
             } else if (timeBlock > currentTime) {
                 $("#" + workingHours[index] + "-details").addClass("bg-info");
-            } else {
+            } else if (timeBlock < currentTime) {
                 $("#" + workingHours[index] + "-details").addClass("bg-warning");
-
             }
         }
-    }, 1000)
+    }, (1000))
 }
 
 render();
