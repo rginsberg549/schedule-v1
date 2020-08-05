@@ -1,0 +1,2 @@
+Description
+This is a simple daily planner that allows the user to save information about their day inside time-blocks.  Information added should be persistant provided they don't clear the local storage inside the browser. The display features different colors to help the user distinguish between blocks of time that are in the past, present, or future.  User can easily save/clear text that was added.

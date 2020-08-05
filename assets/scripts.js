@@ -1,8 +1,11 @@
 var workingHours = [8,9,10,11,12,13,14,15,16,17];
 
-var date = moment().format("MMM-DD-YYYY  hh:mm");
-
 var containerElement = $(".container");
+
+function getDate() {
+    var date = moment().format("MMM-DD-YYYY  hh:mm");
+    return date;
+}
 
 
 function createRow(time) {
@@ -64,6 +67,7 @@ function render() {
     for (let index = 0; index < workingHours.length; index++) {
         createRow(workingHours[index]);
         getDetails(workingHours[index]);
+        applyStyles();
     }
 }
 
@@ -71,9 +75,9 @@ function getDetails(time) {
     $("#" + time + "-details").val(localStorage.getItem(time + "-details"));
 }
 
-function todayDate() {
+function applyStyles() {
     setInterval(function() {
-        $(".current-date-time").text("Today is " + date);
+        $(".current-date-time").text("Today is " + getDate());
 
         for (let index = 0; index < workingHours.length; index++) {
             var timeBlock = $("#" + workingHours[index]).attr("id");
@@ -87,8 +91,7 @@ function todayDate() {
                 $("#" + workingHours[index] + "-details").addClass("bg-warning");
             }
         }
-    }, (1000))
+    }, 1000)
 }
 
 render();
-todayDate();
